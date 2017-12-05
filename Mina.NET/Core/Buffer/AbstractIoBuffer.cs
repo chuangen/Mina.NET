@@ -951,6 +951,34 @@ namespace Mina.Core.Buffer
         }
 
         /// <inheritdoc/>
+        public override UInt16 GetUInt16()
+        {
+            return Bits.GetUShort(this, Offset(NextGetIndex(2)), Order == ByteOrder.BigEndian);
+        }
+
+        /// <inheritdoc/>
+        public override UInt16 GetUInt16(Int32 index)
+        {
+            return Bits.GetUShort(this, Offset(CheckIndex(index, 2)), Order == ByteOrder.BigEndian);
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt16(UInt16 value)
+        {
+            AutoExpand0(2);
+            Bits.PutUShort(this, Offset(NextPutIndex(2)), value, Order == ByteOrder.BigEndian);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt16(Int32 index, UInt16 value)
+        {
+            AutoExpand0(index, 2);
+            Bits.PutUShort(this, Offset(CheckIndex(index, 2)), value, Order == ByteOrder.BigEndian);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override Int32 GetInt32()
         {
             return Bits.GetInt(this, Offset(NextGetIndex(4)), Order == ByteOrder.BigEndian);
@@ -975,6 +1003,34 @@ namespace Mina.Core.Buffer
         {
             AutoExpand0(index, 4);
             Bits.PutInt(this, Offset(CheckIndex(index, 4)), value, Order == ByteOrder.BigEndian);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override UInt32 GetUInt32()
+        {
+            return Bits.GetUInt(this, Offset(NextGetIndex(4)), Order == ByteOrder.BigEndian);
+        }
+
+        /// <inheritdoc/>
+        public override UInt32 GetUInt32(Int32 index)
+        {
+            return Bits.GetUInt(this, Offset(CheckIndex(index, 4)), Order == ByteOrder.BigEndian);
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt32(UInt32 value)
+        {
+            AutoExpand0(4);
+            Bits.PutUInt(this, Offset(NextPutIndex(4)), value, Order == ByteOrder.BigEndian);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt32(Int32 index, UInt32 value)
+        {
+            AutoExpand0(index, 4);
+            Bits.PutUInt(this, Offset(CheckIndex(index, 4)), value, Order == ByteOrder.BigEndian);
             return this;
         }
 
@@ -1182,6 +1238,54 @@ namespace Mina.Core.Buffer
                     PutShortL(bb, bi, x);
             }
 
+
+            // -- get/put ushort --
+
+            private static ushort MakeUShort(byte b1, byte b0)
+            {
+                return (ushort)((b1 << 8) | (b0 & 0xff));
+            }
+
+            public static ushort GetUShortL(AbstractIoBuffer bb, int bi)
+            {
+                return MakeUShort(bb.GetInternal(bi + 1),
+                         bb.GetInternal(bi + 0));
+            }
+
+            public static ushort GetUShortB(AbstractIoBuffer bb, int bi)
+            {
+                return MakeUShort(bb.GetInternal(bi + 0),
+                         bb.GetInternal(bi + 1));
+            }
+
+            public static ushort GetUShort(AbstractIoBuffer bb, int bi, Boolean bigEndian)
+            {
+                return (bigEndian ? GetUShortB(bb, bi) : GetUShortL(bb, bi));
+            }
+
+            private static byte UShort1(ushort x) { return (byte)(x >> 8); }
+            private static byte UShort0(ushort x) { return (byte)(x >> 0); }
+
+            public static void PutUShortL(AbstractIoBuffer bb, int bi, ushort x)
+            {
+                bb.PutInternal(bi + 0, UShort0(x));
+                bb.PutInternal(bi + 1, UShort1(x));
+            }
+
+            public static void PutUShortB(AbstractIoBuffer bb, int bi, ushort x)
+            {
+                bb.PutInternal(bi + 0, UShort1(x));
+                bb.PutInternal(bi + 1, UShort0(x));
+            }
+
+            public static void PutUShort(AbstractIoBuffer bb, int bi, ushort x, Boolean bigEndian)
+            {
+                if (bigEndian)
+                    PutUShortB(bb, bi, x);
+                else
+                    PutUShortL(bb, bi, x);
+            }
+
             // -- get/put int --
 
             private static int MakeInt(byte b3, byte b2, byte b1, byte b0)
@@ -1240,6 +1344,66 @@ namespace Mina.Core.Buffer
                     PutIntB(bb, bi, x);
                 else
                     PutIntL(bb, bi, x);
+            }
+
+            // -- get/put UInt32 --
+
+            private static UInt32 MakeUInt(byte b3, byte b2, byte b1, byte b0)
+            {
+                return (UInt32)((((b3 & 0xff) << 24) |
+                          ((b2 & 0xff) << 16) |
+                          ((b1 & 0xff) << 8) |
+                          ((b0 & 0xff) << 0)));
+            }
+
+            public static UInt32 GetUIntL(AbstractIoBuffer bb, int bi)
+            {
+                return MakeUInt(bb.GetInternal(bi + 3),
+                           bb.GetInternal(bi + 2),
+                           bb.GetInternal(bi + 1),
+                           bb.GetInternal(bi + 0));
+            }
+
+            public static UInt32 GetUIntB(AbstractIoBuffer bb, int bi)
+            {
+                return MakeUInt(bb.GetInternal(bi + 0),
+                           bb.GetInternal(bi + 1),
+                           bb.GetInternal(bi + 2),
+                           bb.GetInternal(bi + 3));
+            }
+
+            public static UInt32 GetUInt(AbstractIoBuffer bb, int bi, Boolean bigEndian)
+            {
+                return (bigEndian ? GetUIntB(bb, bi) : GetUIntL(bb, bi));
+            }
+
+            private static byte UInt3(uint x) { return (byte)(x >> 24); }
+            private static byte UInt2(uint x) { return (byte)(x >> 16); }
+            private static byte UInt1(uint x) { return (byte)(x >> 8); }
+            private static byte UInt0(uint x) { return (byte)(x >> 0); }
+
+            public static void PutUIntL(AbstractIoBuffer bb, int bi, uint x)
+            {
+                bb.PutInternal(bi + 3, UInt3(x));
+                bb.PutInternal(bi + 2, UInt2(x));
+                bb.PutInternal(bi + 1, UInt1(x));
+                bb.PutInternal(bi + 0, UInt0(x));
+            }
+
+            public static void PutUIntB(AbstractIoBuffer bb, int bi, uint x)
+            {
+                bb.PutInternal(bi + 0, UInt3(x));
+                bb.PutInternal(bi + 1, UInt2(x));
+                bb.PutInternal(bi + 2, UInt1(x));
+                bb.PutInternal(bi + 3, UInt0(x));
+            }
+
+            public static void PutUInt(AbstractIoBuffer bb, int bi, uint x, Boolean bigEndian)
+            {
+                if (bigEndian)
+                    PutUIntB(bb, bi, x);
+                else
+                    PutUIntL(bb, bi, x);
             }
 
             // -- get/put long --

@@ -425,6 +425,32 @@ namespace Mina.Core.Buffer
         }
 
         /// <inheritdoc/>
+        public override UInt16 GetUInt16()
+        {
+            return _buf.GetUInt16();
+        }
+
+        /// <inheritdoc/>
+        public override UInt16 GetUInt16(Int32 index)
+        {
+            return _buf.GetUInt16(index);
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt16(UInt16 value)
+        {
+            _buf.PutUInt16(value);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt16(Int32 index, UInt16 value)
+        {
+            _buf.PutUInt16(index, value);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override Int32 GetInt32()
         {
             return _buf.GetInt32();
@@ -447,6 +473,32 @@ namespace Mina.Core.Buffer
         public override IoBuffer PutInt32(Int32 index, Int32 value)
         {
             _buf.PutInt32(index, value);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override UInt32 GetUInt32()
+        {
+            return _buf.GetUInt32();
+        }
+
+        /// <inheritdoc/>
+        public override UInt32 GetUInt32(Int32 index)
+        {
+            return _buf.GetUInt32(index);
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt32(UInt32 value)
+        {
+            _buf.PutUInt32(value);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IoBuffer PutUInt32(Int32 index, UInt32 value)
+        {
+            _buf.PutUInt32(index, value);
             return this;
         }
 

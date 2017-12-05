@@ -621,6 +621,10 @@ namespace Mina.Core.Buffer
         /// <exception cref="InvalidOperationException">this buffer is read-only</exception>
         public abstract IoBuffer PutInt16(Int32 index, Int16 value);
 
+        public abstract UInt16 GetUInt16();
+        public abstract UInt16 GetUInt16(Int32 index);
+        public abstract IoBuffer PutUInt16(UInt16 value);
+        public abstract IoBuffer PutUInt16(Int32 index, UInt16 value);
         /// <summary>
         /// Reads the next four bytes at this buffer's current position,
         /// composing them into a int value according to the current byte order,
@@ -660,6 +664,11 @@ namespace Mina.Core.Buffer
         /// <exception cref="IndexOutOfRangeException">index is negative or not smaller than the buffer's limit, minus three</exception>
         /// <exception cref="InvalidOperationException">this buffer is read-only</exception>
         public abstract IoBuffer PutInt32(Int32 index, Int32 value);
+
+        public abstract UInt32 GetUInt32();
+        public abstract UInt32 GetUInt32(Int32 index);
+        public abstract IoBuffer PutUInt32(UInt32 value);
+        public abstract IoBuffer PutUInt32(Int32 index, UInt32 value);
 
         /// <summary>
         /// Reads the next eight bytes at this buffer's current position,
