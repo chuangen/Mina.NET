@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="lib\**" />
+    <Compile Remove="Util\System.Collections.Concurrent\**" />
+    <Compile Remove="Util\System.Collections.Generic\**" />
+    <Compile Remove="Util\System\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <EmbeddedResource Remove="Util\System.Collections.Concurrent\**" />
+    <EmbeddedResource Remove="Util\System.Collections.Generic\**" />
+    <EmbeddedResource Remove="Util\System\**" />
+    <None Remove="lib\**" />
+    <None Remove="Util\System.Collections.Concurrent\**" />
+    <None Remove="Util\System.Collections.Generic\**" />
+    <None Remove="Util\System\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Filter\Executor\ThreadPoolExecutor.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncDatagramAcceptor.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncDatagramConnector.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncDatagramSession.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncSocketAcceptor.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncSocketConnector.NET20.cs" />
+    <Compile Remove="Transport\Socket\AsyncSocketSession.NET20.cs" />
+    <Compile Remove="Util\Delegates.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="System.IO.Ports" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>
